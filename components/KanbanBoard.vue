@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Column } from '~/types'
+import type { Column } from '~/types'
 import { nanoid } from 'nanoid'
 const columns = ref<Column[]>([
   {
@@ -72,12 +72,19 @@ const columns = ref<Column[]>([
       :key="col.id"
       class="bg-blue-100 p-6 rounded min-w-[240px]"
     >
-      <header>
+      <header class="font-bold mb-4">
         {{ col.title }}
       </header>
-      <p v-for="task in col.tasks" :key="task.id">
-        {{ task.title }}
-      </p>
+      <KanbanBoardTask
+        v-for="task in col.tasks"
+        :key="task.id"
+        :task="task"
+      />
+      <footer>
+        <button class="text-sm text-gray-400 hover:text-gray-600 duration-500">
+          + Add a task
+        </button>
+      </footer>
     </div>
   </div>
 </template>
