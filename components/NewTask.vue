@@ -6,7 +6,7 @@ const emit = defineEmits<{
   (e: 'added', payload: Task) : void
 }>()
 
-const focused = ref(false)
+const isFocused = ref(false)
 const title = ref('')
 
 const addTask = (event: Event) => {
@@ -26,15 +26,15 @@ const addTask = (event: Event) => {
   <div>
     <textarea
       v-model="title"
-      :placeholder="focused ? 'Enter a title for this task' : '+ Add a task'"
-      class="focus:bg-white focus:shadow resize-none rouned w-full border-none bg-transparent p-2 cursor-pointer text-sm duration-500 overflow-hidden	"
+      :placeholder="isFocused ? 'Enter a title for this task' : '+ Add a task'"
+      class="focus:bg-white focus:shadow resize-none rouned w-full border-none rounded bg-transparent p-2 cursor-pointer text-sm duration-500 overflow-hidden	"
       :class="{
-        'h-7': !focused,
-        'h-20': focused,
+        'h-7': !isFocused,
+        'h-20': isFocused,
       }"
       style="outline: none !important;"
-      @focus="focused = true"
-      @blur="focused = false"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
       @keydown.tab="addTask"
       @keyup.enter="addTask"
     />

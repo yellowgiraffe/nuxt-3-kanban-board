@@ -91,7 +91,10 @@ const ctrl = useKeyModifier('Control')
           :animation="300"
         >
           <template #item="{ element: task } : { element: Task }">
-            <KanbanBoardTask :task="task" />
+            <KanbanBoardTask
+              :task="task"
+              @deleted="col.tasks = col.tasks.filter(el => el.id !== $event)"
+            />
           </template>
         </draggable>
         <footer>
