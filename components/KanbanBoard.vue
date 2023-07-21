@@ -2,41 +2,19 @@
 import type { Column, Task } from '~/types'
 import draggable from 'vuedraggable'
 import { nanoid } from 'nanoid'
-const columns = ref<Column[]>([
+const columns = useLocalStorage<Column[]>('boardData', [
   {
     id: nanoid(),
     title: 'Backlog',
     tasks: [
       {
         id: nanoid(),
-        title: 'Send a package to Dawid fend a package to Dawid',
-        createdAt: new Date()
-      }
-    ]
-  },
-  {
-    id: nanoid(),
-    title: 'In Progress',
-    tasks: [
-      {
-        id: nanoid(),
-        title: 'Do homework',
-        createdAt: new Date()
-      }
-    ]
-  },
-  {
-    id: nanoid(),
-    title: 'In Progress',
-    tasks: [
-      {
-        id: nanoid(),
-        title: 'Do homework',
+        title: 'Send a package',
         createdAt: new Date()
       },
       {
         id: nanoid(),
-        title: 'Do homework',
+        title: 'Make presentation',
         createdAt: new Date()
       }
     ]
@@ -47,41 +25,61 @@ const columns = ref<Column[]>([
     tasks: [
       {
         id: nanoid(),
-        title: 'Do homework',
+        title: 'Deploy website',
         createdAt: new Date()
       }
     ]
   },
-  {
-    id: nanoid(),
-    title: 'In Progress',
-    tasks: [
-      {
-        id: nanoid(),
-        title: 'Do homework',
-        createdAt: new Date()
-      }
-    ]
-  }
 ])
 const ctrl = useKeyModifier('Control')
+
+const addColumn = () => {
+  const col: Column = {
+    id: nanoid(),
+    title: '',
+    tasks: []
+  }
+
+  columns.value.push(col)
+  nextTick(() => {
+    (
+      document.querySelector(
+        '.column:last-of-type .column-title'
+        ) as HTMLInputElement
+    ).focus()
+  })
+}
 </script>
 
 <template>
-  <div>
+  <div class="flex items-start gap-4 overflow-x-auto">
     <draggable
       v-model="columns"
       group="columns"
       item-key="id"
       :animation="300"
       handle=".drag-icon"
-      class="flex items-start gap-4 overflow-x-auto"
+      class="flex items-start gap-4"
     >
     <template #item="{ element: col } : { element: Column }">
-      <section class="bg-blue-100 p-6 rounded min-w-[240px] mb-8">
+      <section class="column bg-blue-100 px-6 pt-2 pb-6 rounded min-w-[255px] mb-8">
         <header class="font-bold mb-4">
-          <DragIcon />
-          {{ col.title }}
+          <div class="text-right mb-1 mr-2">
+            <button
+              class="text-xs text-gray-400 hover:text-rose-500 duration-500"
+              @click="columns = columns.filter(el => el.id !== col.id)"
+            >
+              ✕
+            </button>
+          </div>
+          <DragIcon class="m-2" />
+          <input
+            v-model="col.title"
+            type="text"
+            :placeholder="!col.title ? 'Enter a title for this column' : ''"
+            class="column-title bg-transparent focus:bg-white w-44 outline-blue-200 px-1 duration-500 mr-1 placeholder:text-sm placeholder:font-normal"
+            @keyup.enter="($event.target as HTMLInputElement).blur()"
+          />
         </header>
         <draggable
           v-model="col.tasks"
@@ -98,13 +96,16 @@ const ctrl = useKeyModifier('Control')
           </template>
         </draggable>
         <footer>
-          <!-- <button class="text-sm text-gray-400 hover:text-gray-600 duration-500">
-            + Add a task
-          </button> -->
           <NewTask @added="col.tasks.push($event)"/>
         </footer>
       </section>
     </template>
     </draggable>
+    <button
+      class="bg-blue-100 p-2 text-sm whitespace-nowrap rounded opacity-50 hover:opacity-80 duration-500 min-w-[240px]"
+      @click="addColumn"
+    >
+      + Add a column
+    </button>
   </div>
 </template>
