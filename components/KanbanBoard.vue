@@ -62,7 +62,7 @@ const addColumn = () => {
       class="flex items-start gap-4"
     >
     <template #item="{ element: col } : { element: Column }">
-      <section class="column bg-blue-100 px-6 pt-2 pb-6 rounded min-w-[255px] mb-8">
+      <section class="column bg-blue-100 px-6 pt-2 pb-6 rounded min-w-[255px] mb-28">
         <header class="font-bold mb-4">
           <div class="text-right mb-1 mr-2">
             <button
@@ -76,7 +76,7 @@ const addColumn = () => {
           <input
             v-model="col.title"
             type="text"
-            :placeholder="!col.title ? 'Enter a title for this column' : ''"
+            :placeholder="!col.title ? 'Enter a title' : ''"
             class="column-title bg-transparent focus:bg-white w-44 outline-blue-200 px-1 duration-500 mr-1 placeholder:text-sm placeholder:font-normal"
             @keyup.enter="($event.target as HTMLInputElement).blur()"
           />
