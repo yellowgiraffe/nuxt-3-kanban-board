@@ -4,7 +4,7 @@
       <header>
         <h1 class="text-slate-400 text-center tracking-wider mb-6">
           <img
-            src="logo.svg"
+            src="/logo.svg"
             alt="Planny logo"
             width="120"
             class="mx-auto mb-2"
